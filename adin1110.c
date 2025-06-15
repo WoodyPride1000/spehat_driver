@@ -27,7 +27,7 @@
 
 #include <net/switchdev.h>
 
-#include <asm/unaligned.h>
+#include <linux/unaligned.h>
 
 #define ADIN1110_PHY_ID				0x1
 
@@ -557,7 +557,17 @@ static int adin1110_register_mdiobus(struct adin1110_priv *priv,
 		return -ENOMEM;
 
 	snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
-		 priv->cfg->name, priv->spidev->chip_select);
+		 priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+
+
+// 修正前
+//snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+//      priv->cfg->name, priv->spidev->chip_select);
+
+// 修正後
+//snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
+//	priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+
 
 	mii_bus->name = priv->mii_bus_name;
 	mii_bus->read = adin1110_mdio_read;
@@ -1170,8 +1180,15 @@ static int adin1110_probe_netdevs(struct adin1110_priv *priv)
 		netdev->netdev_ops = &adin1110_netdev_ops;
 		netdev->ethtool_ops = &adin1110_ethtool_ops;
 		netdev->priv_flags |= IFF_UNICAST_FLT;
-		netdev->features |= NETIF_F_NETNS_LOCAL;
+	//	netdev->features |= NETIF_F_NETNS_LOCAL;
 
+// 修正前
+//netdev->features |= NETIF_F_NETNS_LOCAL;
+
+// 修正後 (この行を削除するかコメントアウト)
+// netdev->features |= NETIF_F_NETNS_LOCAL;
+
+		
 		port_priv->phydev = get_phy_device(priv->mii_bus, i + 1, false);
 		if (IS_ERR(port_priv->phydev)) {
 			netdev_err(netdev, "Could not find PHY with device address: %d.\n", i);
