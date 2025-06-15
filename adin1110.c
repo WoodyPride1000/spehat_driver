@@ -29,6 +29,10 @@
 
 #include <linux/unaligned.h>
 
+
+//#include <linux/unaligned.h> 代案
+//#include <asm/unaligned.h>　修正前
+
 #define ADIN1110_PHY_ID				0x1
 
 #define ADIN1110_RESET				0x03
