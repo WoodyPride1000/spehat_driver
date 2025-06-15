@@ -561,7 +561,7 @@ static int adin1110_register_mdiobus(struct adin1110_priv *priv,
 		return -ENOMEM;
 
 	snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
-		 priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+		 priv->cfg->name, (unsigned int)*priv->spidev->chip_select);
 
 
 // 修正前
@@ -570,7 +570,7 @@ static int adin1110_register_mdiobus(struct adin1110_priv *priv,
 
 // 修正後
 //snprintf(priv->mii_bus_name, MII_BUS_ID_SIZE, "%s-%u",
-//	priv->cfg->name, (unsigned int)priv->spidev->chip_select);
+//	priv->cfg->name, (unsigned int)*priv->spidev->chip_select);
 
 
 	mii_bus->name = priv->mii_bus_name;
